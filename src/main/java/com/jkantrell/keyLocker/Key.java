@@ -1,6 +1,7 @@
 package com.jkantrell.keyLocker;
 
 import com.jeff_media.customblockdata.CustomBlockData;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
@@ -33,6 +34,10 @@ public class Key {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {return false; }
         return meta.getPersistentDataContainer().has(KeyLocker.KEY_ID_NAMESPACE_KEY, PersistentDataType.STRING);
+    }
+    public static boolean isKeyable(ItemStack item) {
+        Material type = item.getType();
+        return type.equals(Material.IRON_NUGGET) || type.equals(Material.GOLD_NUGGET);
     }
 
     //GETTERS
