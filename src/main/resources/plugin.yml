@@ -1,0 +1,9 @@
+name: KeyLocker
+version: '${project.version}'
+main: com.jkantrell.keyLocker.KeyLocker
+api-version: 1.18
+prefix: KeyLocker
+softdepend: [ LandLords ]
+authors: [ TheJsUser ]
+description: Allows doors to be locked and only opened by its key.
+website: jkantrell.xom
