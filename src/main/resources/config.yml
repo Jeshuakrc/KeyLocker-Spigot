@@ -1,0 +1,3 @@
+#Weather or not open doors, fence gates and trapdoors are unlocked when open.
+#If true, they can only be opened by their key, but anyone can close them.
+unlockIfOpen: false

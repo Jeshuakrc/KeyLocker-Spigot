@@ -1,6 +1,7 @@
 package com.jkantrell.keyLocker;
 
 import com.jeff_media.customblockdata.CustomBlockData;
+import com.jkantrell.keyLocker.io.KeyLockerConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -10,16 +11,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.SmithingRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Openable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public final class KeyLocker extends JavaPlugin {
 
     //FIELDS
     public static NamespacedKey KEY_ID_NAMESPACE_KEY;
+    public static final KeyLockerConfiguration CONFIG = new KeyLockerConfiguration("./plugins/KeyLocker/config.yml");
     public static final ItemStack KEY_ITEM_GOLD = new ItemStack(Material.GOLD_NUGGET);
     public static final ItemStack KEY_ITEM_IRON = new ItemStack(Material.IRON_NUGGET);
     private static JavaPlugin mainInstance_;
@@ -27,6 +32,17 @@ public final class KeyLocker extends JavaPlugin {
     //PLUGIN EVENTS
     @Override
     public void onEnable() {
+        //Loading configuration
+        try {
+            KeyLocker.CONFIG.load();
+        } catch (FileNotFoundException e) {
+            File configFile = new File(KeyLocker.CONFIG.getFilePath());
+            configFile.getParentFile().mkdirs();
+            this.saveResource("config.yml",true);
+            this.onEnable();
+            return;
+        }
+
         //Setting main instance
         KeyLocker.mainInstance_ = this;
 
@@ -75,7 +91,7 @@ public final class KeyLocker extends JavaPlugin {
                 (material.toString().toLowerCase().contains("fence_gate"))
         );
     }
-    public static boolean isBlockLocked(Block block) {
+    public static boolean isBlockAssigned(Block block) {
         if (!KeyLocker.isBlockLockable(block)) { return false; }
         String id = new CustomBlockData(block,KeyLocker.getMainInstance()).get(KEY_ID_NAMESPACE_KEY,PersistentDataType.STRING);
         if (id == null) { return false; }

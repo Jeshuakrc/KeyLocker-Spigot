@@ -1,6 +1,7 @@
 package com.jkantrell.keyLocker;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Openable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -23,7 +24,10 @@ class EventListener implements Listener {
 
         Key key = Key.getKey(e.getItem());
 
-        if (KeyLocker.isBlockLocked(block)) {
+        if (KeyLocker.isBlockAssigned(block)) {
+            if (KeyLocker.CONFIG.unlockIfOpen && block.getBlockData() instanceof Openable openable) {
+                if (openable.isOpen()) { return; }
+            }
             if (key == null || !key.isAssignedTo(block)) { e.setCancelled(true); }
             return;
         }

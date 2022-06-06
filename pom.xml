@@ -97,6 +97,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.jkantrell</groupId>
+            <artifactId>Yamlizer</artifactId>
+            <version>main-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.jeff_media</groupId>
             <artifactId>CustomBlockData</artifactId>
             <version>2.0.0</version>
