@@ -1,3 +1,11 @@
 #Weather or not open doors, fence gates and trapdoors are unlocked when open.
 #If true, they can only be opened by their key, but anyone can close them.
 unlockIfOpen: false
+
+#Weather or not open chests and barrels are accessible if they're open (Someone else is accessing them).
+#If true, only a player with its respective key can open an access it, but while open, anyone can access it.
+accessibleIfOpen: false
+
+#If true, having the key of a lockable block in a player's inventory is enough to unlock it,
+#otherwise, the player must hold the key to unlock it.
+handsFreeKeys: false

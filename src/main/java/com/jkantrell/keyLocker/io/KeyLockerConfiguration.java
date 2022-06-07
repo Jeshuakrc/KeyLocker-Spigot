@@ -11,4 +11,10 @@ public class KeyLockerConfiguration extends AbstractYamlConfig {
     //CONFIG
     @ConfigField
     public boolean unlockIfOpen = false;
+
+    @ConfigField
+    public boolean accessibleIfOpen = false;
+
+    @ConfigField
+    public boolean handsFreeKeys = false;
 }
