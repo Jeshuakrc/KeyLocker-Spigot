@@ -70,16 +70,26 @@ class EventListener implements Listener {
                 }
             }
             if (key == null || !key.isAssignedTo(block)) { e.setCancelled(true); }
-            else if (KeyLocker.CONFIG.accessibleIfOpen && block.getState() instanceof Lidded lidded) {
-                this.openLiddeds.put(lidded,e.getPlayer());
+            else {
+                PlayerUseKeyEvent event = new PlayerUseKeyEvent(e.getPlayer(),key,block, PlayerUseKeyEvent.Action.UNLOCK);
+                KeyLocker.getMainInstance().getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    e.setCancelled(true);
+                    return;
+                }
+                if (KeyLocker.CONFIG.accessibleIfOpen && block.getState() instanceof Lidded lidded) {
+                    this.openLiddeds.put(lidded, e.getPlayer());
+                }
             }
             return;
         }
 
         if (key == null || key.isAssigned()) { return; }
-
-        key.assignTo(block);
         e.setCancelled(true);
+
+        PlayerUseKeyEvent event = new PlayerUseKeyEvent(e.getPlayer(),key,block, PlayerUseKeyEvent.Action.ASSIGN);
+        KeyLocker.getMainInstance().getServer().getPluginManager().callEvent(event);
+        if (!event.isCancelled()) { key.assignTo(block); }
     }
 
     @EventHandler

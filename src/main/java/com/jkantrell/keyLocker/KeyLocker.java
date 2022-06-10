@@ -2,20 +2,20 @@ package com.jkantrell.keyLocker;
 
 import com.jeff_media.customblockdata.CustomBlockData;
 import com.jkantrell.keyLocker.io.KeyLockerConfiguration;
+import com.jkantrell.regionslib.regions.abilities.Ability;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.SmithingRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Openable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -71,6 +71,18 @@ public final class KeyLocker extends JavaPlugin {
 
         Bukkit.addRecipe(goldRecipe);
         Bukkit.addRecipe(ironRecipe);
+
+        //Adds RegionsLib abilities
+        try {
+            new Ability<PlayerUseKeyEvent>(
+                    PlayerUseKeyEvent.class,
+                    "ASSIGN_KEYS",
+                    e -> e.getAction().equals(PlayerUseKeyEvent.Action.ASSIGN),
+                    PlayerEvent::getPlayer,
+                    e -> e.getBlock().getLocation().add(.5,.5,.5)
+            ).register();
+        } catch (NoClassDefFoundError ignored) {} //If there's no RegionsLib implementation, does nothing.
+
     }
 
     @Override
